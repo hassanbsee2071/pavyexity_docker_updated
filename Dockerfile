@@ -61,10 +61,10 @@ COPY .env /root/.env
 RUN export $(grep -v '^#' /root/.env | xargs -d '\n')
 COPY entrypoint.sh /etc/entrypoint.sh
 RUN chmod +x /etc/entrypoint.sh
-
+COPY --chown=www-data:www-data . /var/www
 
 WORKDIR /var/www
 RUN composer install
 EXPOSE 80
-
+RUN chown -R www-data:www-data /var/www
 ENTRYPOINT ["/etc/entrypoint.sh"]
